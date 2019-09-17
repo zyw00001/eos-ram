@@ -1,9 +1,9 @@
 本项目用于监控EOS的RAM交易记录。 
   
 ## 运行步骤
-1、到[https://www.blockdog.com/form](https://www.blockdog.com/form) 去申请apikey;  
+1、到 [https://www.blockdog.com/form](https://www.blockdog.com/form) 去申请apikey;  
 2、将申请到的apikey设置到src/config.js文件的apikey字段中;  
-3、用npm install命令安装相关依赖包(请先安装nodejs,nodejs最好用最新版);
+3、用npm install命令安装相关依赖包(请先安装nodejs,nodejs最好用最新版);  
 4、用npm run serve命令启动node服务器，会先同步最近的ram交易数据;  
 5、[可选] 用npm run client命令启动node客户端;  
   
