@@ -1,0 +1,21 @@
+{
+  "name": "eos-ram",
+  "version": "1.0.0",
+  "description": "eos ram monitor",
+  "keywords": [
+    "eos",
+    "ram"
+  ],
+  "author": "zyw",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.24.0",
+    "node-fetch": "^2.6.0",
+    "ws": "^7.1.2"
+  },
+  "scripts": {
+    "serve": "node ./src/node-server.js",
+    "client": "node ./src/node-client.js"
+  }
+}
