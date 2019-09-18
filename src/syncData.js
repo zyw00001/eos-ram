@@ -3,10 +3,11 @@ const helper = require('./node-common');
 
 const getSyncTime = (time) => {
   if (time) {
-    return moment(time).add(-8, 'hours').format('YYYY-MM-DDTHH:mm:ss');
+    // 存储在本地文件中的时间是北京时间
+    return moment.utc(`${time}+08:00`).format('YYYY-MM-DDTHH:mm:ss');
   } else {
     // 如果还没有任何数据，则同步前5天的数据
-    return moment(moment().format('YYYY-MM-DD')).add(-8 - 24 * 5, 'hours').format('YYYY-MM-DDTHH:mm:ss');
+    return moment.utc().add(-5, 'days').format('YYYY-MM-DDTHH:mm:ss');
   }
 };
 

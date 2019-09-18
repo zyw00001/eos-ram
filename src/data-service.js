@@ -8,7 +8,8 @@ const includeFee = (quantity) => {
 };
 
 const formatData = ({id, block_time, data: {from, to, quantity, memo}}) => {
-  const obj = {id, time: moment(block_time).add(8, 'hours').format('YYYY-MM-DD HH:mm:ss')};
+  // 接收到的时间是utc时间，将其转换成北京时间再存储
+  const obj = {id, time: moment.utc(block_time).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')};
   if (memo === 'buy ram') {
     obj.buy = 1;
     obj.account = from;
