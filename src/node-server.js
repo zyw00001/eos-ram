@@ -4,6 +4,7 @@ const config = require('./config');
 const DataService = require('./data-service');
 const helper = require('./node-common');
 const syncData = require('./data-sync');
+const Watcher = require('./watcher');
 
 if (!config.apikey) {
   console.log('请在config.js设置apikey');
@@ -12,7 +13,7 @@ if (!config.apikey) {
 }
 
 const dataService = new DataService();
-let wsClients = [];
+const watcher = new Watcher();
 
 const closeDsAndExit = () => {
   dataService.close().then(() => {
@@ -24,15 +25,6 @@ const closeDsAndExit = () => {
 process.on('SIGINT', () => {
   closeDsAndExit();
 });
-
-//
-const dispatchMessage = (data) => {
-  if (wsClients.length) {
-    for (const ws of wsClients) {
-      ws.send(JSON.stringify(data));
-    }
-  }
-};
 
 // 启动WebSocket客户端，用于接收RAM交易记录
 const startWebSocketClient = (callback) => {
@@ -71,7 +63,7 @@ const startWebSocketClient = (callback) => {
     } else if (data.type === 'sub_action_traces') {
       const obj = dataService.appendData(data.data);
       helper.showData(obj);
-      dispatchMessage(obj);
+      watcher.send(obj);
     }
   });
 
@@ -102,9 +94,15 @@ const restartCallback = (canRestart) => {
 const startWebSocketServer = (server) => {
   const wss = new WebSocket.Server({server});
   wss.on('connection', (ws) => {
-    wsClients.push(ws);
+    ws.on('message', (data) => {
+      data = JSON.parse(data);
+      if (data.type === 'watch') {
+        watcher.add(ws, data.quantity);
+      }
+    });
+
     ws.on('close', () => {
-      wsClients = wsClients.filter(wsClient => wsClient !== ws);
+      watcher.remove(ws);
     });
   });
 };
