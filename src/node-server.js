@@ -3,7 +3,7 @@ const express = require('express');
 const config = require('./config');
 const DataService = require('./data-service');
 const helper = require('./node-common');
-const syncData = require('./syncData');
+const syncData = require('./data-sync');
 
 if (!config.apikey) {
   console.log('请在config.js设置apikey');

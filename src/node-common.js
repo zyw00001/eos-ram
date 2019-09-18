@@ -54,8 +54,8 @@ const getColorMessage = (message, color) => {
 const showData = ({buy, time, account, quantity}) => {
   const color = buy ? 'red' : 'green';
   if (!isBeijingZone) {
-    // 如果本地时间不是北京时间，则将北京时间转换成本地时间展示
-    time = moment(`${time}+08:00`).local().format('YYYY-MM-DD HH:mm:ss');
+    // 如果本地时间不是北京时间，则转换成本地时间展示
+    time = moment(`${time}+08:00`).format('YYYY-MM-DD HH:mm:ss');
   }
   console.log(`${time} ${account} ${getColorMessage(quantity, color)}`);
 };

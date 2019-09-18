@@ -1,9 +1,10 @@
 const moment = require('moment');
 const helper = require('./node-common');
 
+// 获取同步数据需要的utc时间
 const getSyncTime = (time) => {
   if (time) {
-    // 存储在本地文件中的时间是北京时间
+    // 存储在文件中的时间是北京时间，将其转换成utc时间
     return moment.utc(`${time}+08:00`).format('YYYY-MM-DDTHH:mm:ss');
   } else {
     // 如果还没有任何数据，则同步前5天的数据

@@ -2,28 +2,30 @@ const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
 
-const includeFee = (quantity) => {
+// 加入0.5%的手续费
+const joinFee = (quantity) => {
   const num = parseFloat(quantity) * 1000 / 995;
   return `${(Math.ceil(num * 10000) / 10000).toFixed(4)} EOS`;
 };
 
 const formatData = ({id, block_time, data: {from, to, quantity, memo}}) => {
-  // 接收到的时间是utc时间，将其转换成北京时间再存储
+  // block_time是utc时间，将其转换成北京时间存储
   const obj = {id, time: moment.utc(block_time).utcOffset('+08:00').format('YYYY-MM-DD HH:mm:ss')};
   if (memo === 'buy ram') {
     obj.buy = 1;
     obj.account = from;
-    obj.quantity = includeFee(quantity);
+    obj.quantity = joinFee(quantity);
   } else {
     obj.buy = 0;
     obj.account = to;
+    // 卖出记录中已经包含了手续费，所以不需要加入手续费
     obj.quantity = quantity;
   }
   return obj;
 };
 
 const appendData = (target, source, quantity, count) => {
-  for (let index = source.length - 1; index >=0; index--) {
+  for (let index = source.length - 1; index >= 0; index--) {
     const item = source[index];
     if (parseFloat(item.quantity) >= quantity) {
       if (target.unshift(item) >= count) {
