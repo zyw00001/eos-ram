@@ -1,4 +1,7 @@
 const fetch = require('node-fetch');
+const moment = require('moment');
+
+const isBeijingZone = moment().utcOffset() === 480;
 
 // 设置fetch的选项
 const setOption = (body, method='POST') => {
@@ -50,6 +53,10 @@ const getColorMessage = (message, color) => {
 // 显示交易记录
 const showData = ({buy, time, account, quantity}) => {
   const color = buy ? 'red' : 'green';
+  if (!isBeijingZone) {
+    // 如果本地时间不是北京时间，则将北京时间转换成本地时间展示
+    time = moment(`${time}+08:00`).local().format('YYYY-MM-DD HH:mm:ss');
+  }
   console.log(`${time} ${account} ${getColorMessage(quantity, color)}`);
 };
 
