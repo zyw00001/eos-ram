@@ -64,9 +64,11 @@ process.stdin.on('data', data => {
     } else {
       console.log('亲，还没有调用过watch命令');
     }
+  } else if (arr[0] === 'clear') {
+    process.stdout.write('\x1B[2J\x1B[0f');
   } else if (arr[0] === 'exit') {
     process.exit(0);
-  } else {
+  } else if (arr[0]) {
     helper.logError('无效命令');
   }
 });
