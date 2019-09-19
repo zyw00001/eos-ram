@@ -42,7 +42,7 @@ const excludeId = (list, id) => {
 
 // 最多同步ram数据10000条
 const syncData10000 = async (dataService, apikey) => {
-  const body = {account_name: 'eosio.ram', type: 3, sort: 2, size: 100};
+  const body = {code: 'eosio.token', account_name: 'eosio.ram', type: 3, sort: 2, size: 100};
   const data = await dataService.getData(1);
   const id = data.length ? data[0].id : '';
   let total = 0;
