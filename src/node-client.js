@@ -9,7 +9,7 @@ const showRecords = (count=10, quantity=0) => {
   const url = `${host}/api/records?count=${count}&quantity=${quantity}`;
   helper.fetchJson(url).then(data => {
     if (data.code) {
-      console.log(data.message);
+      helper.logError(data.message);
     } else {
       for (const item of data) {
         helper.showData(item);
@@ -27,7 +27,9 @@ const startWebSocket = (quantity) => {
   const ws = new WebSocket(`ws://${ip}:${port}`);
 
   ws.on('open', () => {
+    global.ws = ws;
     startWatch(ws, quantity);
+    console.log('开始监视...');
   });
 
   ws.on('message', (data) => {
@@ -35,15 +37,15 @@ const startWebSocket = (quantity) => {
   });
 
   ws.on('error', (e) => {
-    console.error(e);
+    helper.logError(e.message);
   });
 
   ws.on('close', () => {
-    console.log('close');
-    global.ws = null;
+    if (global.ws) {
+      console.log('停止监视');
+      global.ws = null;
+    }
   });
-
-  global.ws = ws;
 };
 
 process.stdin.on('data', data => {
@@ -56,7 +58,15 @@ process.stdin.on('data', data => {
     } else {
       startWatch(global.ws, arr[1]);
     }
+  } else if (arr[0] === 'stop') {
+    if (global.ws) {
+      global.ws.close();
+    } else {
+      console.log('亲，还没有调用过watch命令');
+    }
   } else if (arr[0] === 'exit') {
     process.exit(0);
+  } else {
+    helper.logError('无效命令');
   }
 });

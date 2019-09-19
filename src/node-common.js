@@ -35,7 +35,7 @@ const fetchJson = (url, option) => {
         })
       }
     }).catch(e => {
-      resolve({code: 1, message: '未知错误'});
+      resolve({code: 1, message: e.message});
     });
   });
 };
@@ -66,10 +66,15 @@ const showList = (list) => {
   }
 };
 
+const logError = (message) => {
+  console.log(getColorMessage(message, 'red'));
+};
+
 module.exports = {
   setOption,
   fetchJson,
   getColorMessage,
   showData,
-  showList
+  showList,
+  logError
 };
