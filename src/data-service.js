@@ -217,4 +217,6 @@ class DataService {
   }
 }
 
+DataService.formatData = formatData;
+
 module.exports = DataService;

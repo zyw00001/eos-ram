@@ -13,10 +13,7 @@ const getSyncTime = (time) => {
 };
 
 const fetchRecords = async (body, apikey) => {
-  const url = 'https://open-api.eos.blockdog.com/v2/third/get_account_transfer';
-  const option = helper.setOption(body);
-  option.headers.apikey = apikey;
-  const json = await helper.fetchJson(url, option);
+  const json = await helper.queryTransactions(body, apikey);
   if (json.code) {
     const error = new Error();
     error.message = json.message;

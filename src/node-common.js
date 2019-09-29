@@ -40,6 +40,14 @@ const fetchJson = (url, option) => {
   });
 };
 
+// 查询交易记录
+const queryTransactions = (body, apikey) => {
+  const url = 'https://open-api.eos.blockdog.com/v2/third/get_account_transfer';
+  const option = setOption(body);
+  option.headers.apikey = apikey;
+  return fetchJson(url, option);
+};
+
 // 设置消息的显示颜色
 const getColorMessage = (message, color) => {
   const restore = '\x1B[0m';
@@ -73,6 +81,7 @@ const logError = (message) => {
 module.exports = {
   setOption,
   fetchJson,
+  queryTransactions,
   getColorMessage,
   showData,
   showList,
