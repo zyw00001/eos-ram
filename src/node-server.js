@@ -5,6 +5,7 @@ const DataService = require('./data-service');
 const helper = require('./node-common');
 const syncData = require('./data-sync');
 const Watcher = require('./watcher');
+const getRamPrice = require('./info');
 
 if (!config.apikey) {
   console.log('请在config.js设置apikey');
@@ -124,6 +125,13 @@ const startHttpServer = () => {
         res.send(data);
       });
     }
+  });
+
+  // 获取ram价格
+  app.get('/api/price', (req, res) => {
+    getRamPrice().then(data => {
+      res.send(data);
+    });
   });
 
   app.get('*', (req, res) => {

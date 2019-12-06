@@ -18,6 +18,17 @@ const showRecords = (count=10, quantity=0) => {
   });
 };
 
+const showPrice = () => {
+  const url = `${host}/api/price`;
+  helper.fetchJson(url).then(data => {
+    if (data.code) {
+      helper.logError(data.message);
+    } else {
+      helper.logError(data.price);
+    }
+  });
+};
+
 const startWatch = (ws, quantity=0) => {
   ws.send(JSON.stringify({type: 'watch', quantity}));
 };
@@ -52,6 +63,8 @@ process.stdin.on('data', data => {
   const arr = data.toString().trim().split(' ');
   if (arr[0] === 'show') {
     showRecords(arr[1], arr[2]);
+  } else if (arr[0] === 'price') {
+    showPrice();
   } else if (arr[0] === 'watch') {
     if (!global.ws) {
       startWebSocket(arr[1]);
